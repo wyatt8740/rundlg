@@ -10,7 +10,7 @@ dialog was written as FvwmForm configuration syntax.
 ### Known problems
 
 It uses a `system()` call, which I could possibly replace with some variant of
-the `exec() call for better security. 
+the `exec()` call for better security. 
 
 Also, I use a couple global variables because I'm still not sure how to get a
 pointer to a GtkApplication from within a callback function. I'm still very
