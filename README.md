@@ -2,6 +2,8 @@
 
 A standalone GTK+3 run dialogue program, written in C.
 
+![Screenshot of the run dialogue window](/screenshot.png?raw=true)
+
 I made this pretty much just for my own use alongside FVWM3, since in
 the transition from FVWM2 to 3 it had its FvwmForm support removed (at least
 temporarily). Thus I had to implement a new one, as my previously used run
