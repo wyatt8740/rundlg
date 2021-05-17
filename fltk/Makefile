@@ -28,11 +28,8 @@ CXXFLAGS=-O2 -Wall $(FLTK_FLAGS)
 
 all: rundlg
 
-rundlg.o: rundlg.cpp
-	$(CXX) $(CXXFLAGS) -c -o $@ $<
-
-rundlg: rundlg.o
-	$(CXX) -o $@ $^ $(LDLIBS) $(LDFLAGS)
+rundlg: rundlg.cpp
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDLIBS) $(LDFLAGS)
 
 .PHONY: clean
 
