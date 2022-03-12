@@ -31,6 +31,7 @@ easier to write for me than the GTK program was as well.
 #include <FL/Fl_Input.H>
 
 #include <stdio.h>
+#include <stdlib.h>
 
 /*
   These two definitions can be changed or undefined and the program should
