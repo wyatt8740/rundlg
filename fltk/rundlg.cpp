@@ -127,11 +127,16 @@ void cancel_cb(Fl_Widget *ob)
 
 void run_cb(Fl_Widget *ob)
 {
+  /* so ~/.xsession-errors doesn't get filled up */
+  const char *precmd = "( "; /* empty string if you are using no redirection */
+  const char *postcmd = " 2>/dev/null & ) > /dev/null 2>&1"; /* should always be at least "&" */
   const char *runcmd = ((Fl_Input*)text_input)->value();
   if(strlen(runcmd) > 0)
   {
-    /* +1 for '&', +1 for null terminator */
-    char *newcmd=(char*)malloc(sizeof(char)*strlen(runcmd)+2);
+    /* + sizeof(char) * strlen(precmd)
+       + sizeof(char) * strlen(postcmd)
+       +1 for null terminator */
+    char *newcmd=(char*)malloc(sizeof(char)*strlen(runcmd)*strlen(precmd)+sizeof(char)*strlen(postcmd)+sizeof(char)+1);
     /* check that malloc succeeded; if so, add ampersand to command */
     if(newcmd)
     {
@@ -139,14 +144,15 @@ void run_cb(Fl_Widget *ob)
        * We're (hopefully) guaranteed that runcmd is already null terminated as
        * returned from FLTK.
        */
-      strcpy(newcmd, runcmd);
+      strcpy(newcmd, precmd);
+      strcat(newcmd, runcmd);
+      strcat(newcmd, postcmd);
       size_t len=strlen(newcmd);
-      newcmd[len]='&'; /* overwrite old terminator */
-      newcmd[len+1]='\0'; /* add new terminator */
-      if(len+1 != strlen(newcmd))
+      newcmd[len+1]='\0'; /* replace old terminator */
+      if(len != strlen(runcmd) + strlen(precmd) + strlen(postcmd))
       {
         fprintf(stderr, "ERROR: Something's horribly wrong with my concatenation.\n");
-        fprintf(stderr, "length is %zu, should be %zu\n",strlen(newcmd),len+1);
+        fprintf(stderr, "length is %zu, should be %zu\n",strlen(newcmd),len);
       }
       system(newcmd); /* Maybe a security issue? Probably. Almost definitely! */
       free(newcmd); /* never forget to free. */
